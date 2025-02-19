@@ -53,7 +53,7 @@ public class InventoryClick implements Listener{
                             if (plr.getUniqueId().equals(p.getUniqueId())) {
                                 continue;
                             }
-                            if (!plr.hasPermission("pt.bypass")) {
+
                                 if (nearest == null) {
                                     nearest = plr;
                                 }else {
@@ -65,7 +65,7 @@ public class InventoryClick implements Listener{
                                         continue;
                                     }
                                 }
-                            }
+
                         }
                         if (nearest != null){
                             p.setCompassTarget(nearest.getLocation());

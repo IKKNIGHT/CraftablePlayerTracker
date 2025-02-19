@@ -21,19 +21,13 @@ public class Compass implements CommandExecutor{
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(!(sender instanceof Player)) {
-            sender.sendMessage("YOUR NOT A PLAYER CANT EXECUTE.");
+            sender.sendMessage("YOU'RE NOT A PLAYER CANT EXECUTE.");
             return true;
         }
 
         Player p = (Player) sender;
-
-        if (p.hasPermission("pt.compass")) {
-            p.getInventory().addItem(new ItemStack(Material.COMPASS));
-            return true;
-        }else {
-            return false;
-        }
-
+        p.getInventory().addItem(new ItemStack(Material.COMPASS));
+        return true;
     }
 
 }

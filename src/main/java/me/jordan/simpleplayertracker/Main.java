@@ -9,9 +9,11 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,7 +25,7 @@ public class Main extends JavaPlugin{
 
     public void onEnable() {
         plugin = this;
-
+        registerCompassRecipe();
         track();
 
         PlayersUI.initialize();
@@ -47,7 +49,7 @@ public class Main extends JavaPlugin{
                         if (plr.getUniqueId().equals(p.getUniqueId())) {
                             continue;
                         }
-                        if (!plr.hasPermission("pt.bypass")) {
+
                             if (nearest == null) {
                                 nearest = plr;
                             }else {
@@ -61,7 +63,7 @@ public class Main extends JavaPlugin{
                                     distance = "In Another World";
                                 }
                             }
-                        }
+
                     }
                     toTrack = nearest;
                 }
@@ -143,6 +145,32 @@ public class Main extends JavaPlugin{
                 }
             }
         }, 1L , 20);
+    }
+    private void registerCompassRecipe() {
+        // Create the tracker compass item
+        ItemStack trackerCompass = new ItemStack(Material.COMPASS);
+        ItemMeta meta = trackerCompass.getItemMeta();
+        meta.setDisplayName("Tracking");  // Must match your display name check
+        trackerCompass.setItemMeta(meta);
+
+        // Create shaped recipe
+        ShapedRecipe recipe = new ShapedRecipe(
+                new NamespacedKey(this, "tracker_compass"),
+                trackerCompass
+        );
+
+        // Customize recipe pattern
+        recipe.shape(
+                " W ",
+                " C ",
+                "   "
+        );
+
+        // Define ingredients
+        recipe.setIngredient('C', Material.COMPASS);
+        recipe.setIngredient('W',Material.WITHER_SKELETON_SKULL);
+        // Register recipe
+        Bukkit.addRecipe(recipe);
     }
 }
 

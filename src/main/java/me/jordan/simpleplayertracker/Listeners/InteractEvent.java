@@ -14,10 +14,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 
-public class InteractEvent implements Listener{
+public class InteractEvent implements Listener {
 
-    private Main plugin;
-    public static HashMap<Player,Player> players = new HashMap<Player,Player>();
+    public static HashMap<Player, Player> players = new HashMap<Player, Player>();
+    private final Main plugin;
 
     public InteractEvent(Main plugin) {
         this.plugin = plugin;
@@ -28,31 +28,31 @@ public class InteractEvent implements Listener{
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (p.hasPermission("pt.track")) {
-            if (p.getInventory().getItemInMainHand().getType() == Material.COMPASS && (e.getAction() == Action.RIGHT_CLICK_BLOCK ||  e.getAction() == Action.RIGHT_CLICK_AIR)) {
-                if (p.isSneaking()) {
-                    p.openInventory(PlayersUI.GUI(p));
-                }else if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Tracking")) {
-                    String playerName = (String) p.getInventory().getItemInMainHand().getItemMeta().getLore().toArray()[0];
-                    Player toTrack = Bukkit.getPlayerExact(playerName);
-                    if (toTrack != null) {
-                        if (!toTrack.hasPermission("pt.bypass")) {
-                            ItemStack i = p.getInventory().getItemInMainHand();
-                            CompassMeta cMeta = (CompassMeta) i.getItemMeta();
-                            cMeta.setLodestone(toTrack.getLocation());
-                            cMeta.setLodestoneTracked(false);
+        if (e.getItem() == null || !e.getItem().hasItemMeta()) return;
+        if (p.getInventory().getItemInMainHand().getType() == Material.COMPASS && (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)) {
+            if (p.isSneaking()) {
+                p.openInventory(PlayersUI.GUI(p));
+            } else if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Tracking")) {
+                String playerName = (String) p.getInventory().getItemInMainHand().getItemMeta().getLore().toArray()[0];
+                Player toTrack = Bukkit.getPlayerExact(playerName);
+                if (toTrack != null) {
 
-                            i.setItemMeta(cMeta);
+                    ItemStack i = p.getInventory().getItemInMainHand();
+                    CompassMeta cMeta = (CompassMeta) i.getItemMeta();
+                    cMeta.setLodestone(toTrack.getLocation());
+                    cMeta.setLodestoneTracked(false);
 
-                            players.put(p, toTrack);
-                        }
-                    }
-                }else {
-                    p.openInventory(PlayersUI.GUI(p));
+                    i.setItemMeta(cMeta);
+
+                    players.put(p, toTrack);
+
                 }
-
+            } else {
+                p.openInventory(PlayersUI.GUI(p));
             }
+
         }
+
     }
 
 }

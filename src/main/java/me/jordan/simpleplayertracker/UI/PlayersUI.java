@@ -35,7 +35,6 @@ public class PlayersUI {
 
         for(Player pl : Bukkit.getOnlinePlayers()) {
             if (pl != p) {
-                if (!pl.hasPermission("pt.bypass")) {
                     ItemStack playerSkull = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
                     SkullMeta sm = (SkullMeta) playerSkull.getItemMeta();
                     sm.setOwner(pl.getName());
@@ -46,7 +45,6 @@ public class PlayersUI {
                     playerSkull.setItemMeta(sm);
                     inv.setItem(slot, playerSkull);
                     slot++;
-                }
             }
         }
 
