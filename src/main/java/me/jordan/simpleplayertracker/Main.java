@@ -11,12 +11,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends JavaPlugin{
 
@@ -150,7 +155,14 @@ public class Main extends JavaPlugin{
         // Create the tracker compass item
         ItemStack trackerCompass = new ItemStack(Material.COMPASS);
         ItemMeta meta = trackerCompass.getItemMeta();
-        meta.setDisplayName("Tracking");  // Must match your display name check
+
+        // Set display name and lore
+        meta.setDisplayName(Utils.color("&eTracking Compass"));  // Yellow colored name
+        List<String> lore = new ArrayList<>();
+        lore.add(Utils.color("&7Track players in the same world"));
+        lore.add(Utils.color("&bSHIFT-Right-click to select target"));
+        meta.setLore(lore);
+
         trackerCompass.setItemMeta(meta);
 
         // Create shaped recipe
@@ -159,17 +171,17 @@ public class Main extends JavaPlugin{
                 trackerCompass
         );
 
-        // Customize recipe pattern
+        // Recipe pattern
         recipe.shape(
                 " W ",
                 " C ",
-                "   "
+                " W "
         );
 
-        // Define ingredients
+        // Ingredients
         recipe.setIngredient('C', Material.COMPASS);
-        recipe.setIngredient('W',Material.WITHER_SKELETON_SKULL);
-        // Register recipe
+        recipe.setIngredient('W', Material.WITHER_SKELETON_SKULL);
+
         Bukkit.addRecipe(recipe);
     }
 }

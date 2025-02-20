@@ -33,7 +33,7 @@ public class InteractEvent implements Listener {
             if (p.isSneaking()) {
                 p.openInventory(PlayersUI.GUI(p));
             } else if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Tracking")) {
-                String playerName = (String) p.getInventory().getItemInMainHand().getItemMeta().getLore().toArray()[0];
+                String playerName = (String) p.getInventory().getItemInMainHand().getItemMeta().getLore().toArray()[0]; 
                 Player toTrack = Bukkit.getPlayerExact(playerName);
                 if (toTrack != null) {
 
