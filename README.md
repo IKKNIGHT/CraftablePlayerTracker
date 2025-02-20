@@ -1,23 +1,20 @@
-Description:
+**Description:**
 
-Right click on a compass to bring up a gui and chose a player to track. if you want to change what player you are tracking just hold shift then right click. And craft it by havinbg a compass in the middle and a wither skull on top of it and on the bottom of the compass.
+To track a player using a compass, right-click on the compass to open a GUI. From there, you can select which player you want to track. If you want to change the player you're tracking, simply hold the Shift key and then right-click again. 
 
-Recipe
+**Crafting Recipe:**
 
+To craft the tracking compass, place a compass in the middle of the crafting grid with a Wither Skeleton Skull on top and one on the bottom, as shown below:
+
+```
 XWX
 XCX
 XWX
+```
 
-Where 'X' represents nothing (air)
-Where 'C' represents Compass
-Where 'W' represents Wither Skeleton Skulls.
+'X' represents empty spaces (air), 'C' represents the Compass, and 'W' represents Wither Skeleton Skulls.
 
-Commands:
+**Commands:**
 
-/ptcompass - gives player a compass (requieres OP)
-
- 
-
-
-
+Use the command `/ptcompass` to give the player a compass (requires OP privileges).
  
