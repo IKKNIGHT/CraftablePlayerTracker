@@ -26,6 +26,7 @@ public class Compass implements CommandExecutor{
         }
 
         Player p = (Player) sender;
+        if (!p.isOp()) return false; // if we arent op this command is unusable!
         p.getInventory().addItem(new ItemStack(Material.COMPASS));
         return true;
     }
