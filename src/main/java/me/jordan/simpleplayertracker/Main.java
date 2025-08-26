@@ -187,6 +187,7 @@ public class Main extends JavaPlugin{
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
         meta.setLore(lore);
+        meta.setMaxStackSize(1); // stack 1
         trackerCompass.setItemMeta(meta);
 
         // Create shaped recipe
