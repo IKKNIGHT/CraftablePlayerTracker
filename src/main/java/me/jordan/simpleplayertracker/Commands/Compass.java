@@ -42,7 +42,7 @@ public class Compass implements CommandExecutor{
         ItemMeta meta = trackerCompass.getItemMeta();
 
         // Set display name and lore
-        meta.setDisplayName(Utils.color("&eTracking Compass"));
+        meta.setDisplayName(Utils.color("&ePermanent Tracking Compass"));
         List<String> lore = new ArrayList<>();
         lore.add(Utils.color("&7Track players in the same world"));
         lore.add(Utils.color("&bSHIFT-Right-click to select target"));

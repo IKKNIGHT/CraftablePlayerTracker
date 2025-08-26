@@ -1,6 +1,7 @@
 package me.jordan.simpleplayertracker;
 
 import me.jordan.simpleplayertracker.Commands.Compass;
+import me.jordan.simpleplayertracker.Listeners.CraftTrackerEvent;
 import me.jordan.simpleplayertracker.Listeners.InteractEvent;
 import me.jordan.simpleplayertracker.Listeners.InventoryClick;
 import me.jordan.simpleplayertracker.UI.PlayersUI;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -37,9 +39,28 @@ public class Main extends JavaPlugin{
 
         new InteractEvent(this);
         new InventoryClick(this);
+        new CraftTrackerEvent(this);
         new Compass(this);
 
         saveDefaultConfig();
+
+        startExpirationChecker();
+    }
+
+    private void startExpirationChecker() {
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                //player.sendMessage("Running on you");
+                for (ItemStack item : player.getInventory().getContents()) {
+                    if (item == null || !item.hasItemMeta()) continue;
+
+                    if (item.getType() == Material.COMPASS && isExpired(item)) { // if compass is expired
+                        player.getInventory().remove(item);
+                        player.sendMessage(Utils.color("&cYour Tracking Compass has expired!"));
+                    }
+                }
+            }
+        }, 20L * 60, 20L * 60); // runs every 60 seconds (20 ticks * 60 = 1 minute)
     }
 
     public void track() {
@@ -161,8 +182,11 @@ public class Main extends JavaPlugin{
         List<String> lore = new ArrayList<>();
         lore.add(Utils.color("&7Track players in the same world"));
         lore.add(Utils.color("&bSHIFT-Right-click to select target"));
-        meta.setLore(lore);
+        lore.add(Utils.color("&bTracker lasts 45 real life minutes!"));
+        meta.addEnchant(Enchantment.INFINITY,1,true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
+        meta.setLore(lore);
         trackerCompass.setItemMeta(meta);
 
         // Create shaped recipe
@@ -184,5 +208,21 @@ public class Main extends JavaPlugin{
 
         Bukkit.addRecipe(recipe);
     }
+
+    public static boolean isExpired(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) return true;
+        ItemMeta meta = item.getItemMeta();
+        NamespacedKey key = new NamespacedKey(Main.plugin, "creation_time");
+
+        if (!meta.getPersistentDataContainer().has(key, PersistentDataType.LONG)) {
+            return false; // not a crafted tracker
+        }
+
+        long creation = meta.getPersistentDataContainer().get(key, PersistentDataType.LONG);
+        long now = System.currentTimeMillis();
+
+        return (now - creation) >= (45 * 60 * 1000); // 1 minute
+    }
+
 }
 

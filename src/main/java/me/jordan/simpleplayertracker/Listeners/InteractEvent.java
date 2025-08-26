@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import me.jordan.simpleplayertracker.Main;
 import me.jordan.simpleplayertracker.UI.PlayersUI;
+import me.jordan.simpleplayertracker.Util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,7 +29,16 @@ public class InteractEvent implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
+
         if (e.getItem() == null || !e.getItem().hasItemMeta()) return;
+        //p.sendMessage("Main.isExpired(e.getItem()) : "+Main.isExpired(e.getItem()));
+        if (Main.isExpired(e.getItem())){ // if compass is expired
+            p.sendMessage(Utils.color("&cThis Tracking Compass has expired!"));
+            p.getInventory().remove(e.getItem()); // delete expired item
+            e.setCancelled(true);
+            return;
+        }
+
         if (p.getInventory().getItemInMainHand().getType() == Material.COMPASS && (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)) {
             if (p.isSneaking()) {
                 p.openInventory(PlayersUI.GUI(p));
